@@ -1,16 +1,10 @@
-# webrtc-stream [![build status][1]][2]
+# webrtc-stream 
 
 Stream video and audio
 
 ## Example
 
-## Installation
-
-`npm install webrtc-stream`
-
-## Tests
-
-`make test`
+See [example folder][1]
 
 ## Contributors
 
@@ -18,5 +12,4 @@ Stream video and audio
 
 ## MIT Licenced
 
-  [1]: https://secure.travis-ci.org/Raynos/webrtc-stream.png
-  [2]: http://travis-ci.org/Raynos/webrtc-stream
+  [1]: https://github.com/Raynos/webrtc-stream/tree/master/example
