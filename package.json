@@ -16,11 +16,13 @@
     "url": "https://github.com/Raynos/webrtc-stream/issues",
     "email": "raynos2@gmail.com"
   },
-  "dependencies": {},
+  "dependencies": {
+    "browser-log": "0.0.2"
+  },
   "devDependencies": {
     "browserify-server": "~0.3.1",
     "mux-demux-shoe": "~0.2.7",
-    "discovery-network": "0.0.4"
+    "discovery-network": "0.0.5"
   },
   "licenses": [
     {
