@@ -5,8 +5,8 @@
   "keywords": [],
   "author": "Raynos <raynos2@gmail.com>",
   "repository": "git://github.com/Raynos/webrtc-stream.git",
-  "main": "index",
   "homepage": "https://github.com/Raynos/webrtc-stream",
+  "browserify": "browser.js",
   "contributors": [
     {
       "name": "Jake Verbaten"
@@ -23,10 +23,12 @@
     "remote-events": "~1.1.1",
     "multi-channel-mdm": "~0.5.1",
     "node-uuid": "~1.3.3",
-    "after": "~0.6.0"
+    "after": "~0.6.0",
+    "npmlog": "0.0.2",
+    "through": "~0.1.4"
   },
   "devDependencies": {
-    "browserify-server": "0.2.1"
+    "browserify-server": "~0.3.1"
   },
   "licenses": [
     {

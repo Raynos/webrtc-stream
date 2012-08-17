@@ -1,74 +1,66 @@
-var MediaStream = require("./mediaStream")
-    , PeerConnection = require("./peerConnection")
-    , DiscoveryNetwork = require("./discoveryNetwork")
-    , reconnect = require("reconnect/shoe")
+var WebRTC = require("../../browser")
+    , MediaStream = WebRTC.MediaStream
+    , SimplePeerConnections = WebRTC.SimplePeerConnections
+    , webrtcLog = WebRTC.log
+    , DiscoveryNetwork = require("../../discoveryNetwork/index")
+    , discoveryLog = DiscoveryNetwork.log
+    , Connection = DiscoveryNetwork.Connection
+    , PeerNetwork = DiscoveryNetwork.PeerNetwork
+    , WebRTCNetwork = DiscoveryNetwork.WebRTCNetwork
 
 var localVideo = document.getElementById("local-webrtc")
-    , remoteVideo = document.getElementById("remote-webrtc")
+    , remoteVideos = document.getElementById("remote-videos")
 
 MediaStream.local(localVideo, function (myMediaStream) {
-    reconnect(networkConnection).connect('/shoe')
+    var conn = Connection()
+        , pcs = SimplePeerConnections(myMediaStream)
 
-    function networkConnection(networkStream) {
-        var network = DiscoveryNetwork(networkStream)
-            , peerConnections = {}
+    webrtcLog.info("networkConnection", conn, pcs)
 
-        console.log("networkConnection")
+    conn.identify()
 
-        // when you detect a new peer joining, open a PC to them
-        network.on("peer", handlePeer)
+    var peerNetwork = PeerNetwork(conn)
+        , webrtcNetwork = WebRTCNetwork(conn)
 
-        // incoming offer from another peer
-        network.on("offer", handleOffer)
+    // when you detect a new peer joining, open a PC to them
+    peerNetwork.on("peer", handlePeer)
 
-        // incoming answers from another peer
-        network.on("answer", handleAnswer)
+    // incoming offer from another peer
+    webrtcNetwork.on("offer", handleOffer)
 
-        function handlePeer(remotePeerId) {
-            console.log("handlePeer", remotePeerId)
-            var pc = peerConnections[remotePeerId] =
-                PeerConnection(myMediaStream)
+    // incoming answers from another peer
+    webrtcNetwork.on("answer", pcs.handleAnswer)
 
-            pc.on("offer", sendOfferOverNetwork)
+    // incoming candidates from another peer
+    webrtcNetwork.on("candidate", pcs.handleCandidate)
 
-            pc.createOffer()
+    // outgoing candidates to another peer
+    pcs.on("candidate", webrtcNetwork.sendCandidate)
 
-            function sendOfferOverNetwork(offer, candidates) {
-                console.log("sendOfferOverNetwork", arguments)
-                network.sendOffer(remotePeerId, offer, candidates)
-            }
-        }
+    // render streams from pcs
+    pcs.on("stream", renderStream)
 
-        function handleOffer(remotePeerId, offer, candidates) {
-            console.log("handleOffer", arguments)
-            var pc = PeerConnection(myMediaStream)
+    peerNetwork.join()
 
-            pc.on("stream", onRemoteStream)
+    function handlePeer(remotePeerId) {
+        webrtcLog.info("handlePeer", remotePeerId)
+        var offer = pcs.create(remotePeerId)
 
-            pc.receiveOffer(offer, candidates)
+        webrtcNetwork.sendOffer(remotePeerId, offer)
+    }
 
-            pc.on("answer", sendAnswerOverNetwork)
-            
-            pc.createAnswer(offer)
+    function handleOffer(remotePeerId, offer) {
+        webrtcLog.info("handleOffer", arguments)
+        var answer = pcs.create(remotePeerId, offer)
 
-            function sendAnswerOverNetwork(answer, candidates) {
-                console.log("sendAnswerOverNetwork", arguments)
-                network.sendAnswer(remotePeerId, answer, candidates)
-            }
-        }
+        webrtcNetwork.sendAnswer(remotePeerId, answer)
+    }
 
-        function onRemoteStream(stream) {
-            console.log("onRemoteStream", stream)
-            MediaStream.remote(remoteVideo, stream)
-        }
-
-        function handleAnswer(remotePeerId, answer, candidates) {
-            console.log("handleAnswer", arguments)
-            var pc = peerConnections[remotePeerId]
-
-            pc.on("stream", onRemoteStream)
-
-            pc.receiveAnswer(answer, candidates)
-        }
+    function renderStream(remotePeerId, stream) {
+        webrtcLog.info("onRemoteStream", stream)
+        var remoteVideo = document.createElement("video")
+        remoteVideo.autoplay = true
+        remoteVideos.appendChild(remoteVideo)
+        MediaStream.remote(remoteVideo, stream)
     }
 })

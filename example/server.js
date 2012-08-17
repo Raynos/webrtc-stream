@@ -1,6 +1,6 @@
 var browserifyServer = require("browserify-server")
     , shoe = require("shoe")
-    , DiscoveryNetwork = require("./discoveryNetwork")
+    , DiscoveryNetwork = require("../discoveryNetwork")
 
 var server = browserifyServer.listen(__dirname, 8080)
     , network = DiscoveryNetwork()
