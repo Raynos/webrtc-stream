@@ -1,6 +1,6 @@
 {
   "name": "webrtc-stream",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Stream video and audio",
   "keywords": [],
   "author": "Raynos <raynos2@gmail.com>",
@@ -16,8 +16,7 @@
     "url": "https://github.com/Raynos/webrtc-stream/issues",
     "email": "raynos2@gmail.com"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "browserify-server": "~0.3.1",
     "mux-demux-shoe": "~0.2.7",
