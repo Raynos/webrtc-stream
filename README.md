@@ -48,24 +48,22 @@ MediaStream.local(localVideo, function (myMediaStream) {
     peerNetwork.join()
 
     function handlePeer(remotePeerId) {
-        webrtcLog.info("handlePeer", remotePeerId)
         var offer = pcs.create(remotePeerId)
 
         webrtcNetwork.sendOffer(remotePeerId, offer)
     }
 
     function handleOffer(remotePeerId, offer) {
-        webrtcLog.info("handleOffer", arguments)
         var answer = pcs.create(remotePeerId, offer)
 
         webrtcNetwork.sendAnswer(remotePeerId, answer)
     }
 
     function renderStream(remotePeerId, stream) {
-        webrtcLog.info("onRemoteStream", stream)
         var remoteVideo = document.createElement("video")
         remoteVideo.autoplay = true
         remoteVideos.appendChild(remoteVideo)
+        
         MediaStream.remote(remoteVideo, stream)
     }
 })
