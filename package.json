@@ -28,7 +28,9 @@
     "through": "~0.1.4"
   },
   "devDependencies": {
-    "browserify-server": "~0.3.1"
+    "browserify-server": "~0.3.1",
+    "mux-demux-shoe": "~0.2.7",
+    "discovery-network": "0.0.3"
   },
   "licenses": [
     {
