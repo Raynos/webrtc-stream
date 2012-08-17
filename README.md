@@ -10,9 +10,7 @@ See [example folder][1] for more details
 var WebRTC = require("webrtc-stream")
     , MediaStream = WebRTC.MediaStream
     , SimplePeerConnections = WebRTC.SimplePeerConnections
-    , webrtcLog = WebRTC.log
     , DiscoveryNetwork = require("discovery-network")
-    , discoveryLog = DiscoveryNetwork.log
     , Connection = DiscoveryNetwork.Connection
     , PeerNetwork = DiscoveryNetwork.PeerNetwork
     , WebRTCNetwork = DiscoveryNetwork.WebRTCNetwork
@@ -23,8 +21,6 @@ var localVideo = document.getElementById("local-webrtc")
 MediaStream.local(localVideo, function (myMediaStream) {
     var conn = Connection()
         , pcs = SimplePeerConnections(myMediaStream)
-
-    webrtcLog.info("networkConnection", conn, pcs)
 
     conn.identify()
 
