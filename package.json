@@ -1,6 +1,6 @@
 {
   "name": "webrtc-stream",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Stream video and audio",
   "keywords": [],
   "author": "Raynos <raynos2@gmail.com>",
