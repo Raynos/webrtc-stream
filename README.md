@@ -7,63 +7,24 @@ Stream video and audio
 See [example folder][1] for more details
 
 ``` js
-var WebRTC = require("webrtc-stream")
+var WebRTC = require("../../browser")
     , MediaStream = WebRTC.MediaStream
-    , SimplePeerConnections = WebRTC.SimplePeerConnections
+    , WebRTCStreams = WebRTC.WebRTCStreams
     , DiscoveryNetwork = require("discovery-network")
     , Connection = DiscoveryNetwork.Connection
-    , PeerNetwork = DiscoveryNetwork.PeerNetwork
-    , WebRTCNetwork = DiscoveryNetwork.WebRTCNetwork
 
 var localVideo = document.getElementById("local-webrtc")
     , remoteVideos = document.getElementById("remote-videos")
 
 MediaStream.local(localVideo, function (myMediaStream) {
-    var conn = Connection()
-        , pcs = SimplePeerConnections(myMediaStream)
-
-    conn.identify()
-
-    var peerNetwork = PeerNetwork(conn)
-        , webrtcNetwork = WebRTCNetwork(conn)
-
-    // when you detect a new peer joining, open a PC to them
-    peerNetwork.on("peer", handlePeer)
-
-    // incoming offer from another peer
-    webrtcNetwork.on("offer", handleOffer)
-
-    // incoming answers from another peer
-    webrtcNetwork.on("answer", pcs.handleAnswer)
-
-    // incoming candidates from another peer
-    webrtcNetwork.on("candidate", pcs.handleCandidate)
-
-    // outgoing candidates to another peer
-    pcs.on("candidate", webrtcNetwork.sendCandidate)
-
-    // render streams from pcs
-    pcs.on("stream", renderStream)
-
-    peerNetwork.join()
-
-    function handlePeer(remotePeerId) {
-        var offer = pcs.create(remotePeerId)
-
-        webrtcNetwork.sendOffer(remotePeerId, offer)
-    }
-
-    function handleOffer(remotePeerId, offer) {
-        var answer = pcs.create(remotePeerId, offer)
-
-        webrtcNetwork.sendAnswer(remotePeerId, answer)
-    }
+    var conn = Connection("http://discoverynetwork.co/service")
+        
+    WebRTCStreams(conn, "mediaStreams-demo", myMediaStream, renderStream)
 
     function renderStream(remotePeerId, stream) {
         var remoteVideo = document.createElement("video")
         remoteVideo.autoplay = true
         remoteVideos.appendChild(remoteVideo)
-        
         MediaStream.remote(remoteVideo, stream)
     }
 })
