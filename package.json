@@ -18,13 +18,13 @@
   },
   "dependencies": {
     "browser-log": "0.0.2",
-    "discovery-network": "~0.5.2",
-    "iterators": "~0.2.0"
+    "iterators": "~0.2.0",
+    "discovery-network": "~0.5.2"
   },
   "devDependencies": {
     "browserify-server": "~0.3.1",
     "mux-demux-shoe": "~0.2.7",
-    "discovery-network": "0.0.5"
+    "discovery-network": "~0.5.2"
   },
   "licenses": [
     {

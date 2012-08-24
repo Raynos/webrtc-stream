@@ -7,6 +7,9 @@ var WebRTC = require("../../browser")
 var localVideo = document.getElementById("local-webrtc")
     , remoteVideos = document.getElementById("remote-videos")
 
+WebRTC.log.enabled = true
+DiscoveryNetwork.log.enabled = true
+
 MediaStream.local(localVideo, function (myMediaStream) {
     var conn = Connection("http://discoverynetwork.co/service")
         
