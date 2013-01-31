@@ -7,7 +7,7 @@ Stream video and audio
 See [example folder][1] for more details
 
 ``` js
-var WebRTC = require("../../browser")
+var WebRTC = require("webrtc-stream")
     , MediaStream = WebRTC.MediaStream
     , WebRTCStreams = WebRTC.WebRTCStreams
     , DiscoveryNetwork = require("discovery-network")
